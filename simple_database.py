@@ -122,6 +122,7 @@ if __name__ == '__main__':
     with open(argv[1]) as fi:
         for line in fi:
             args = [elem.strip() for elem in line.strip().split()]
+            args[0] = args[0].upper()
             if len(args) == 1:
                 SIMPLE_DB.apply_action(args[0])()
             elif len(args) == 2:
