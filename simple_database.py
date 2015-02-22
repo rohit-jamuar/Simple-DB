@@ -111,9 +111,7 @@ class SimpleDatabase(object):
         ends up passing a command which is unsupported by this database, the
         database exits the current dialog.
         '''
-        if act in self._action:
-            return self._action[act]
-        return self._action['END']
+        return self._action.get(act, 'END')
 
 if __name__ == '__main__':
     from sys import argv
