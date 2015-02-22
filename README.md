@@ -16,4 +16,4 @@ An in-memory database similar to Redis. There's also support for nested transact
 
 - The *file\_name* should have commands listed one per line. 
 - Execution will read file's contents on a per-line basis and  output the result to STDOUT.
-- It is assumed that all files end with a __END__ command
+- It is assumed that all dB interactions end with a __END__ command.
