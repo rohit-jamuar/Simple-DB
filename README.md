@@ -12,7 +12,7 @@ An in-memory database similar to Redis. There's also support for nested transact
 8. END
 
 ## Run
-`python simple_database.py *file\_name*`
+`python simple_database.py <file_name>`
 
 - The *file\_name* should have commands listed one per line. 
 - Execution will read file's contents on a per-line basis and  output the result to STDOUT.
