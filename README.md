@@ -16,5 +16,5 @@ An in-memory database similar to Redis. There's also support for nested transact
 2. If you have a list of commands written in a file: `cat file_name | python simple_database.py`
 
 - The database interactions happen over command-line.
-- Database driver will read contents on a per-line basis andoutput the result to STDOUT.
+- Database driver will read contents on a per-line basis and output to STDOUT.
 - It is assumed that all dB interactions conclude with a __END__ command.
