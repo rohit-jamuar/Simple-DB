@@ -114,17 +114,17 @@ class SimpleDatabase(object):
         return self._action.get(act, self._action['END'])
 
 if __name__ == '__main__':
-    from sys import argv
-
-    SIMPLE_DB = SimpleDatabase()
-    with open(argv[1]) as fi:
-        for line in fi:
-            args = [elem.strip() for elem in line.strip().split()]
-            if len(args) == 1:
-                SIMPLE_DB.apply_action(args[0].upper())()
-            elif len(args) == 2:
-                SIMPLE_DB.apply_action(args[0].upper())(args[1])
-            elif len(args) == 3:
-                SIMPLE_DB.apply_action(args[0].upper())(args[1], args[2])
+  SIMPLE_DB = SimpleDatabase()
+    try:
+        while True:
+            ARGS = [elem.strip() for elem in raw_input().strip().split()]
+            if len(ARGS) == 1:
+                SIMPLE_DB.apply_action(ARGS[0].upper())()
+            elif len(ARGS) == 2:
+                SIMPLE_DB.apply_action(ARGS[0].upper())(ARGS[1])
+            elif len(ARGS) == 3:
+                SIMPLE_DB.apply_action(ARGS[0].upper())(ARGS[1], ARGS[2])
             else:
                 SIMPLE_DB.apply_action('END')()
+    except EOFError:
+        SIMPLE_DB.apply_action('END')()
