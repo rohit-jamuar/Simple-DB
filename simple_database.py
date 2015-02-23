@@ -114,7 +114,7 @@ class SimpleDatabase(object):
         return self._action.get(act, self._action['END'])
 
 if __name__ == '__main__':
-  SIMPLE_DB = SimpleDatabase()
+    SIMPLE_DB = SimpleDatabase()
     try:
         while True:
             ARGS = [elem.strip() for elem in raw_input().strip().split()]
@@ -127,4 +127,4 @@ if __name__ == '__main__':
             else:
                 SIMPLE_DB.apply_action('END')()
     except EOFError:
-        SIMPLE_DB.apply_action('END')()
+        SIMPLE_DB.apply_action('END')())
