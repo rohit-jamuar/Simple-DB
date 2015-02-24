@@ -1,33 +1,38 @@
 #!/usr/bin/python
 
+
 class SimpleDatabase(object):
+
     '''
     Redis-ish v0.1
     '''
+
     def __init__(self):
         self._transactions = [dict()]
-        self._action = {'SET' : self._set_value, \
-        'UNSET': self._unset_value, 'GET': self._get_value, \
-        'NUMEQUALTO' : self._num_equal_to, 'END' : self._end, \
-        'BEGIN' : self._begin, 'ROLLBACK' : self._rollback, \
-        'COMMIT' : self._commit}
+        self._action = {'SET': self._set_value,
+                        'UNSET': self._unset_value, 'GET': self._get_value,
+                        'NUMEQUALTO': self._num_equal_to, 'END': self._end,
+                        'BEGIN': self._begin, 'ROLLBACK': self._rollback,
+                        'COMMIT': self._commit}
 
-    def _set_value(self, key, value):
+    def _set_value(self, key, value=None):
         '''
         Sets the value of variable with name 'key' to 'value' - the value is
         set in the currently active transaction or at the base index of
         underlying data-structure (i.e. self._transactions), i.e. if no
         transactions are currently live.
         '''
-        self._transactions[-1][key] = value
+        if key:
+            self._transactions[-1][key] = value
 
     def _unset_value(self, key):
         '''
-        Un-sets the value of the variable 'key' in the currently active
+        Un-sets the value of the variable 'key' in the currently active 
         transaction - if no transactions are open, it un-sets the value at the
         base index.
         '''
-        self._transactions[-1][key] = None
+        if key:
+            self._transactions[-1][key] = None
 
     def _get_value(self, var_name):
         '''
@@ -38,15 +43,16 @@ class SimpleDatabase(object):
         found and it's value has not been unset by a previous command, the
         method prints the associated value.
         '''
-        if len(self._transactions) > 1:
-            for key, value in self._transactions[-1].items():
+        if var_name:
+            if len(self._transactions) > 1:
+                for key, value in self._transactions[-1].items():
+                    if key == var_name:
+                        print 'NULL' if not value else value
+                        return
+            for key, value in self._transactions[0].items():
                 if key == var_name:
                     print 'NULL' if not value else value
                     return
-        for key, value in self._transactions[0].items():
-            if key == var_name:
-                print 'NULL' if not value else value
-                return
         print 'NULL'
 
     def _num_equal_to(self, val):
@@ -59,16 +65,18 @@ class SimpleDatabase(object):
         difference is that it only considers those variable's values which
         have not been un-set by the most recently opened transaction.
         '''
-        count, nulled_in_cur_tx = 0, set()
-        if len(self._transactions) > 1:
-            for key, value in self._transactions[-1].items():
-                if value == val:
+        count = 0
+        if val:
+            nulled_in_cur_tx = set()
+            if len(self._transactions) > 1:
+                for key, value in self._transactions[-1].items():
+                    if value == val:
+                        count += 1
+                    if not value:
+                        nulled_in_cur_tx.add(key)
+            for key, value in self._transactions[0].items():
+                if value == val and key not in nulled_in_cur_tx:
                     count += 1
-                if not value:
-                    nulled_in_cur_tx.add(key)
-        for key, value in self._transactions[0].items():
-            if value == val and key not in nulled_in_cur_tx:
-                count += 1
         print count
 
     def _end(self, *_):
@@ -127,4 +135,4 @@ if __name__ == '__main__':
             else:
                 SIMPLE_DB.apply_action('END')()
     except EOFError:
-        SIMPLE_DB.apply_action('END')())
+        SIMPLE_DB.apply_action('END')()
