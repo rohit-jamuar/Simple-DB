@@ -25,7 +25,7 @@ class SimpleDatabase(object):
         if key:
             self._transactions[-1][key] = value
 
-    def _unset_value(self, key):
+    def _unset_value(self, key=None):
         '''
         Un-sets the value of the variable 'key' in the currently active 
         transaction - if no transactions are open, it un-sets the value at the
@@ -34,7 +34,7 @@ class SimpleDatabase(object):
         if key:
             self._transactions[-1][key] = None
 
-    def _get_value(self, var_name):
+    def _get_value(self, var_name=None):
         '''
         If there is an open transaction, this method tries to get the associated
         value from the most recently opened transaction. If it is unable to find
@@ -55,7 +55,7 @@ class SimpleDatabase(object):
                     return
         print 'NULL'
 
-    def _num_equal_to(self, val):
+    def _num_equal_to(self, val=None):
         '''
         This method primarily starts counting variable's values (which
         equal the value provided as an argument to this method) from the
