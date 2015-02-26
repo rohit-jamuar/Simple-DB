@@ -15,7 +15,7 @@ class SimpleDatabase(object):
                         'BEGIN': self._begin, 'ROLLBACK': self._rollback,
                         'COMMIT': self._commit}
 
-    def _set_value(self, key, value=None):
+    def _set_value(self, key=None, value=None):
         '''
         Sets the value of variable with name 'key' to 'value' - the value is
         set in the currently active transaction or at the base index of
