@@ -31,7 +31,7 @@ class SimpleDatabase(object):
         transaction - if no transactions are open, it un-sets the value at the
         base index.
         '''
-        if key:
+        if all([key, key in self._transactions[-1]]):
             self._transactions[-1][key] = None
 
     def _get_value(self, var_name=None):
